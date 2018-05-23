@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 import CourseSelector from "./CourseSelector";
 import StudentsList from "./StudentsList";
-import courseList from "../courseList";
 
 class CourseContainer extends Component {
   state = {
+    courses: [],
     students: [],
     currentCourse: {},
     currentStudent: {}
   };
+
+
+  componentDidMount = () => {
+    fetch(`https://bayside-high.herokuapp.com/api/v1/users/100/courses`)
+      .then(res => res.json())
+      .then(courses => this.setState({
+      courses: courses
+    }))
+  }
 
   render() {
     return (
@@ -18,7 +27,7 @@ class CourseContainer extends Component {
           Course Title
         </div>
 
-        <CourseSelector />
+        <CourseSelector courses={this.state.courses}/>
 
         {/* Edit Form */}
         <form
